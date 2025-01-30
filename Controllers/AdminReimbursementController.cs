@@ -34,11 +34,12 @@ namespace BenefitPortalServices.Controllers
         {
             string reimbursementIdString=payload.reimbursementId;
             string status=payload.status;
+            string responseByadmin=payload.responseByadmin;
             if (!int.TryParse(reimbursementIdString.ToString(), out int reimbursementId))
             {
                 return BadRequest("Invalid sap id format");
             }
-            bool result = _service.UpdateReimbursementStatus(reimbursementId,status);
+            bool result = _service.UpdateReimbursementStatus(reimbursementId,status,responseByadmin);
             if (result)
             {
                 return Ok("Reimbursement status updated successfully.");

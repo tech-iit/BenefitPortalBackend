@@ -34,10 +34,10 @@ namespace BenefitPortalServices.Controllers
             {
                 return Ok(reimbursements);
             }
-            if (reimbursements.Count > 0)
-            {
-                return BadRequest("no bill found");
-            }
+            //if (reimbursements.Count > 0)
+            //{
+            //    return BadRequest("no bill found");
+            //}
             return BadRequest("no bill found");
             //return NotFound();
         }

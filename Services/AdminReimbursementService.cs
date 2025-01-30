@@ -24,7 +24,7 @@ namespace BenefitPortalServices.Services
                 using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT ReimbursementId, EmployeeId, Amount, Notes, Status, ReimbursementType,CreatedDate FROM Reimbursements";
+                    string query = "SELECT ReimbursementId, EmployeeId, Amount, Notes, Status, ReimbursementType,CreatedDate,billresponse FROM Reimbursements";
                     SqlCommand cmd = new SqlCommand(query, conn);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -39,7 +39,8 @@ namespace BenefitPortalServices.Services
                                 Notes = reader.GetString(3),
                                 Status = reader.GetString(4),
                                 ReimbursementType = reader.GetString(5),
-                                Date = reader.GetDateTime(6)
+                                Date = reader.GetDateTime(6),
+                                BillResponse = reader.IsDBNull(7) ? "" : reader.GetString(7),
                             });
                         }
                     }
@@ -54,18 +55,18 @@ namespace BenefitPortalServices.Services
         }
 
         // Update reimbursement status
-        public bool UpdateReimbursementStatus(int reimbursementId, string status)
+        public bool UpdateReimbursementStatus(int reimbursementId, string status,string responseByadmin)
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    string query = "UPDATE Reimbursements SET Status = @Status WHERE ReimbursementId = @ReimbursementId";
+                    string query = "UPDATE Reimbursements SET Status = @Status,billresponse=@responseByadmin WHERE ReimbursementId = @ReimbursementId";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Status", status);
                     cmd.Parameters.AddWithValue("@ReimbursementId", reimbursementId);
-
+                    cmd.Parameters.AddWithValue("@responseByadmin", responseByadmin);
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }

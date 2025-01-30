@@ -12,5 +12,7 @@ namespace BenefitPortalServices.Models
         public string Status { get; set; } = "Pending"; // Default status
         public string ReimbursementType { get; set; }
         public DateTime Date { get; set; }
+
+        public string BillResponse { get; set; }
     }
 }

@@ -60,5 +60,30 @@ namespace BenefitPortalServices.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("DeleteBenefit")]
+        public IHttpActionResult DeleteBenefit([FromBody] dynamic payload)
+        {
+            string BenefitIdstring = payload.BenefitId;
+
+            if (!int.TryParse(BenefitIdstring.ToString(), out int BenefitId))
+            {
+                return BadRequest("Invalid employee id format");
+            }
+
+            var status = _service.DeleteBenefit(BenefitId);
+
+            if (status)
+            {
+                return Ok(new { status = true, message = "Benefit Deleted" });
+            }
+            else
+            {
+                return Ok(new { status = false, message = "Benefit Not deleted" });
+            }
+        }
+
+
+
     }
 }

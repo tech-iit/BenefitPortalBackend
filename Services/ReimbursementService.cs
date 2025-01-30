@@ -47,7 +47,7 @@ namespace BenefitPortalServices.Services
                 using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT ReimbursementId, EmployeeId, Amount, Notes, Status, ReimbursementType FROM Reimbursements WHERE EmployeeId = @EmployeeId";
+                    string query = "SELECT ReimbursementId, EmployeeId, Amount, Notes, Status, ReimbursementType,billresponse FROM Reimbursements WHERE EmployeeId = @EmployeeId";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
 
@@ -61,7 +61,8 @@ namespace BenefitPortalServices.Services
                                 Amount = reader.GetDecimal(2),
                                 Notes = reader.GetString(3),
                                 Status = reader.GetString(4),
-                                ReimbursementType = reader.GetString(5)
+                                ReimbursementType = reader.GetString(5),
+                                BillResponse = reader.IsDBNull(6) ? "" : reader.GetString(6),
                             });
                         }
                     }

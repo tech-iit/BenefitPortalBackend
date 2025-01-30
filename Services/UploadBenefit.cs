@@ -142,7 +142,52 @@ namespace BenefitPortalServices.Services
             }
         }
 
+        public bool DeleteBenefit(int benefitID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
 
+                    // Get the employee's band from the employee table
+                    string query1 = "Delete from AvailedBenefits WHERE benefitId = @benefitID";
+                    SqlCommand queryCmd1 = new SqlCommand(query1, conn);
+                    queryCmd1.Parameters.AddWithValue("@benefitID", benefitID);
+                    int rowsAffected1 = queryCmd1.ExecuteNonQuery();
+
+                    string query2 = "Delete from BookmarkedBenefit WHERE benefitId = @benefitID";
+                    SqlCommand queryCmd2 = new SqlCommand(query2, conn);
+                    queryCmd2.Parameters.AddWithValue("@benefitID", benefitID);
+                    int rowsAffected2 = queryCmd2.ExecuteNonQuery();
+
+                    string query3 = "Delete from feedback WHERE benefitId = @benefitID";
+                    SqlCommand queryCmd3 = new SqlCommand(query3, conn);
+                    queryCmd3.Parameters.AddWithValue("@benefitID", benefitID);
+                    int rowsAffected3 = queryCmd3.ExecuteNonQuery();
+
+                    string query4 = "Delete from Benefit WHERE benefitID = @benefitID";
+                    SqlCommand queryCmd4 = new SqlCommand(query4, conn);
+                    queryCmd4.Parameters.AddWithValue("@benefitID", benefitID);
+                    int rowsAffected4 = queryCmd4.ExecuteNonQuery();
+                    //if (rowsAffected1 > 0)
+                    //{
+                    //    return true;
+                    //}
+                    if (rowsAffected4>0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                Console.WriteLine("Error fetching benefits: " + ex.Message);
+                return false; // Return an empty list in case of error
+            }
+        }
 
 
         private int GetBandPriority(string band)
